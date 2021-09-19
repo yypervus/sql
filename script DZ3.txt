@@ -1,0 +1,43 @@
+create table if not exists artists(
+	id serial primary key,
+	name varchar(100) not null unique
+);
+
+create table if not exists collections(
+	id serial primary key,
+	name varchar(100) not null unique,
+	release integer check(release <= 2021)
+);
+
+create table if not exists style(
+	id serial primary key,
+	name varchar(100) not null unique	
+);
+
+create table alboms(
+	id serial primary key,
+	name varchar(100) not null,
+	release integer check(release <= 2021),	
+	collection_id integer references collections(id)
+);
+
+create table treks(
+	id serial primary key,
+	name varchar(100) not null,
+	duration integer not null check(duration >= 0),	
+	albom_id integer references alboms(id)
+);
+
+
+create table artiststyle(
+	id serial primary key,
+	artist_id integer not null references artists(id),
+	style_id integer not null references style(id)
+);
+
+create table if not exists artistalbom(
+	id serial primary key,
+	artist_id integer not null references artists(id),
+	albom_id integer not null references alboms(id)
+	
+);	
